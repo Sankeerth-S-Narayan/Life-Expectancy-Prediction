@@ -1,8 +1,13 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import plotly.express as px
+import plotly.graph_objs as go
+from plotly.offline import plot
+#import matplotlib.pyplot as plt
 # Load the model from the pickle file
-with open('Model1.pkl', 'rb') as file:
+df_train=pd.read_csv("Life Expectancy Data.csv")
+with open('D:/Fall 2023/CSE 587 B Data Intensive Computing/DIC Project/Model.pkl', 'rb') as file:
     loaded_model = pickle.load(file)
 st.set_page_config(layout="wide")
 title = '<p style="font-family: Arial, Helvetica, sans-serif;text-align:center; font-size: 50px;color:blue;text-shadow: 2px 2px #080000;">LIFE EXPECTANCY PREDICTION </p>'
@@ -101,6 +106,15 @@ if all([Adult_Mortality, Infant_Deaths, Alcohol, Expenditure_Percentage, Hepatit
     if col4.button('Check Prediction'):
         prediction = loaded_model.predict(df)
         st.success(f'The predicted life expectancy is: {prediction}')
+        new_title4 = '<p style="font-family:sans-serif; font-size: 25px;text-align: left;"><br>Visualization</p>'
+        st.markdown(new_title4, unsafe_allow_html=True)
+        new_title5 = '<p style="font-family:sans-serif; font-size: 20px;text-align: left;"><br> This visualization plots the predicted life expectancy value for the entered data among the previously present life expectancy values of other countries. This gives the user an idea to evalaute different factors that affect life expectancy. </p>'
+        st.markdown(new_title5, unsafe_allow_html=True)
+        fig = px.scatter(df_train, y="Life expectancy ",title='Actual vs Predicted Life Expectancy',labels={'Life Expectancy': 'Training Data'}) 
+        fig.add_trace(go.Scatter(y=prediction,mode='markers',marker=dict(color='red'),marker_symbol = 'star',marker_size = 15,name='Predicted Life Expectancy'))
+        fig.update_layout(title_text='Comparison between Actual Vs. Predicted life Expectancy', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_size=18, font_color='white')
+        with st.container(): 
+            st.plotly_chart(fig,use_container_width=True)
 
 else:
     st.warning("Please fill in all the fields before checking the prediction.")
