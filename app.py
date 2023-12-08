@@ -7,7 +7,7 @@ from plotly.offline import plot
 #import matplotlib.pyplot as plt
 # Load the model from the pickle file
 df_train=pd.read_csv("Life Expectancy Data.csv")
-with open('D:/Fall 2023/CSE 587 B Data Intensive Computing/DIC Project/Model.pkl', 'rb') as file:
+with open('Model1.pkl', 'rb') as file:
     loaded_model = pickle.load(file)
 st.set_page_config(layout="wide")
 title = '<p style="font-family: Arial, Helvetica, sans-serif;text-align:center; font-size: 50px;color:blue;text-shadow: 2px 2px #080000;">LIFE EXPECTANCY PREDICTION </p>'
